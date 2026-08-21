@@ -13,7 +13,7 @@ export const NAME_FONT_OPTIONS = [
   { label: '隶书', value: FONT_LISU },
 ] as const
 
-/** 姓名字号，默认中号 */
+/** 姓名字号，默认偏舒适、贴近原版排版 */
 export const FONT_SIZE_OPTIONS = [
   { label: '较小', value: '0.875rem' },
   { label: '小', value: '1rem' },
@@ -23,9 +23,12 @@ export const FONT_SIZE_OPTIONS = [
   { label: '特大', value: '1.75rem' },
 ] as const
 
-export const DEFAULT_COUPLE_FONT_SIZE = '1.125rem'
-export const DEFAULT_INVITE_NAME_FONT_SIZE = '1.125rem'
-export const DEFAULT_TIME_LOCATION_FONT_SIZE = '1.125rem'
+export const DEFAULT_COUPLE_FONT_SIZE = '1rem'
+export const DEFAULT_INVITE_NAME_FONT_SIZE = '0.875rem'
+export const DEFAULT_TIME_LOCATION_FONT_SIZE = '0.875rem'
+
+/** 上一版三个字号都默认成「中」，一并迁到更舒适的默认 */
+export const PREV_UNIFIED_FONT_SIZE = '1.125rem'
 
 const LEGACY_FONT_MAP: Record<string, string> = {
   "'SimSun', serif": FONT_SONG,

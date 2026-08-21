@@ -141,6 +141,10 @@ export function mapToTemplate4(f: FormData): Template4Data {
   }
 }
 
+export function mapToTemplate5(f: FormData): Template4Data {
+  return mapToTemplate4(f)
+}
+
 export function mapToTemplate3(f: FormData): Template3Data {
   const [y, m, d] = f.solarDate.split('-')
   const solarStr = `${y}年${m}月${d}日（${f.solarWeekday}）`

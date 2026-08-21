@@ -38,11 +38,11 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
       onClick={onClose}
     >
       <div
-        className="w-full max-w-sm rounded-2xl bg-white p-5 shadow-soft max-h-[90vh] overflow-y-auto"
+        className="w-full max-w-sm lg:max-w-lg rounded-2xl bg-white p-5 lg:p-8 shadow-soft max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-3">
-          <h2 className="text-lg font-semibold text-gray-800">请开发者喝杯奶茶</h2>
+          <h2 className="text-lg lg:text-xl font-semibold text-gray-800">请开发者喝杯奶茶</h2>
           <div className="shrink-0 text-right leading-none">
             <p className="text-[11px] text-gray-400 mb-1">一杯奶茶</p>
             <p className="text-accent">
@@ -51,10 +51,10 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
             </p>
           </div>
         </div>
-        <p className="mt-2 text-sm text-gray-500 leading-relaxed">
+        <p className="mt-2 lg:mt-3 text-sm lg:text-[15px] text-gray-500 leading-relaxed">
           专属制作，要是喜欢，扫码请我喝杯奶茶，再加微信把截图发我，我回你一串口令。输入后就能下载无水印请柬。有改字、改版等定制需求，也可以加我微信说一声。
         </p>
-        <div className="mt-4 grid grid-cols-2 gap-3">
+        <div className="mt-4 lg:mt-6 grid grid-cols-2 gap-3 lg:gap-6">
           <QrThumb
             src={payQr}
             title="扫码请奶茶"
@@ -106,7 +106,7 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
           <img
             src={preview.src}
             alt={preview.title}
-            className="w-[min(86vw,320px)] aspect-square rounded-2xl bg-white object-contain p-3"
+            className="w-[min(86vw,320px)] lg:w-[min(70vw,420px)] aspect-square rounded-2xl bg-white object-contain p-3"
           />
           <p className="mt-3 text-xs text-white/60">再点一下关闭</p>
         </div>
@@ -139,7 +139,7 @@ function QrThumb({
         <img
           src={src}
           alt={title}
-          className="mx-auto w-full max-w-[140px] aspect-square rounded-xl border border-gray-100 object-contain bg-gray-50"
+          className="mx-auto w-full max-w-[140px] lg:max-w-[200px] aspect-square rounded-xl border border-gray-100 object-contain bg-gray-50"
         />
       </button>
       <p className="mt-1.5 text-xs text-gray-500">{caption}</p>

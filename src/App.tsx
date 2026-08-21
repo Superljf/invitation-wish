@@ -31,7 +31,7 @@ function loadFormData(): FormData {
 function loadTemplate(): TemplateId {
   try {
     const t = localStorage.getItem(TEMPLATE_KEY)
-    if (['1', '2', '3', '4'].includes(t || '')) return Number(t) as TemplateId
+    if (['1', '2', '3', '4', '5'].includes(t || '')) return Number(t) as TemplateId
   } catch (_e) {
     /* ignore */
   }
@@ -146,7 +146,7 @@ function App() {
             <section className="mb-6">
               <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">模板风格</p>
               <div className="flex flex-wrap gap-2">
-                {([1, 2, 3, 4] as const).map(id => (
+                {([1, 2, 3, 4, 5] as const).map(id => (
                   <button
                     key={id}
                     onClick={() => setTemplateId(id)}
@@ -156,7 +156,7 @@ function App() {
                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
-                    {id === 1 ? '古典传统' : id === 2 ? '红金对称' : id === 3 ? '祥云边框' : '竖排中式'}
+                    {id === 1 ? '古典传统' : id === 2 ? '红金对称' : id === 3 ? '祥云边框' : id === 4 ? '竖排中式' : '素柬红框'}
                   </button>
                 ))}
               </div>
@@ -238,7 +238,7 @@ function App() {
           <div className="flex flex-col items-center gap-4 w-full max-w-[360px]">
             <div ref={previewRef} className="relative inline-block">
               <Preview formData={formData} templateId={templateId} />
-              {!unlocked && <Watermark variant={templateId === 3 ? 'white' : 'red'} />}
+              {!unlocked && <Watermark variant={templateId === 3 || templateId === 5 ? 'white' : 'red'} />}
             </div>
             <div className="fixed inset-x-0 bottom-0 z-20 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] bg-white/90 backdrop-blur border-t border-gray-100 lg:static lg:inset-auto lg:p-0 lg:bg-transparent lg:border-0 lg:backdrop-blur-none lg:w-full">
               <div className="flex gap-2">

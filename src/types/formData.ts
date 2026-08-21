@@ -1,4 +1,4 @@
-import { FONT_HEITI, normalizeNameFont, DEFAULT_COUPLE_FONT_SIZE, DEFAULT_INVITE_NAME_FONT_SIZE, DEFAULT_TIME_LOCATION_FONT_SIZE } from '../utils/fonts'
+import { FONT_HEITI, normalizeNameFont, DEFAULT_COUPLE_FONT_SIZE, DEFAULT_INVITE_NAME_FONT_SIZE, DEFAULT_TIME_LOCATION_FONT_SIZE, PREV_UNIFIED_FONT_SIZE } from '../utils/fonts'
 
 /** 统一编辑层数据类型 */
 export interface FormData {
@@ -59,6 +59,15 @@ export function mergeFormData(partial?: Partial<FormData> | null): FormData {
     merged.inviteName2 = merged.bride || defaultFormData.inviteName2
   }
   merged.nameFont = normalizeNameFont(merged.nameFont)
+  if (
+    merged.coupleFontSize === PREV_UNIFIED_FONT_SIZE &&
+    merged.inviteNameFontSize === PREV_UNIFIED_FONT_SIZE &&
+    merged.timeLocationFontSize === PREV_UNIFIED_FONT_SIZE
+  ) {
+    merged.coupleFontSize = DEFAULT_COUPLE_FONT_SIZE
+    merged.inviteNameFontSize = DEFAULT_INVITE_NAME_FONT_SIZE
+    merged.timeLocationFontSize = DEFAULT_TIME_LOCATION_FONT_SIZE
+  }
   if (!merged.coupleFontSize) merged.coupleFontSize = DEFAULT_COUPLE_FONT_SIZE
   if (!merged.inviteNameFontSize) merged.inviteNameFontSize = DEFAULT_INVITE_NAME_FONT_SIZE
   if (!merged.timeLocationFontSize) merged.timeLocationFontSize = DEFAULT_TIME_LOCATION_FONT_SIZE
