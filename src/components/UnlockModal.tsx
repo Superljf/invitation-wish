@@ -52,7 +52,7 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
           </div>
         </div>
         <p className="mt-2 text-sm text-gray-500 leading-relaxed">
-          专属制作，要是喜欢，扫码请我喝杯奶茶，再加微信把截图发我，我回你一串口令。输入后就能下载无水印请柬。
+          专属制作，要是喜欢，扫码请我喝杯奶茶，再加微信把截图发我，我回你一串口令。输入后就能下载无水印请柬。有改字、改版等定制需求，也可以加我微信说一声。
         </p>
         <div className="mt-4 grid grid-cols-2 gap-3">
           <QrThumb
