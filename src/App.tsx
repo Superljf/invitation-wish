@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { EditorForm } from './components/EditorForm'
 import { Preview, type TemplateId } from './components/Preview'
+import { Watermark } from './components/Watermark'
+import { UnlockModal } from './components/UnlockModal'
 import { mergeFormData, type FormData } from './types/formData'
 import { downloadNodeAsPng, isWeChat } from './utils/downloadImage'
+import { loadUnlocked, saveUnlocked } from './utils/unlock'
 // import {
 //   saveInvitation,
 //   getInvitation,
@@ -45,6 +48,8 @@ function App() {
   // const [listLoading, setListLoading] = useState(false)
   const [downloadStatus, setDownloadStatus] = useState<'idle' | 'loading' | 'err'>('idle')
   const [wechatImage, setWechatImage] = useState<string | null>(null)
+  const [unlocked, setUnlocked] = useState(loadUnlocked)
+  const [payOpen, setPayOpen] = useState(false)
   const previewRef = useRef<HTMLDivElement>(null)
 
   // useEffect(() => {
@@ -116,6 +121,12 @@ function App() {
       console.error('下载请柬图片失败', e)
       setDownloadStatus('err')
     }
+  }
+
+  const handleUnlocked = () => {
+    saveUnlocked()
+    setUnlocked(true)
+    setPayOpen(false)
   }
 
   return (
@@ -227,20 +238,34 @@ function App() {
           <div className="flex flex-col items-center gap-4 w-full max-w-[360px]">
             <div ref={previewRef} className="relative inline-block">
               <Preview formData={formData} templateId={templateId} />
+              {!unlocked && <Watermark variant={templateId === 3 ? 'white' : 'red'} />}
             </div>
             <div className="fixed inset-x-0 bottom-0 z-20 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] bg-white/90 backdrop-blur border-t border-gray-100 lg:static lg:inset-auto lg:p-0 lg:bg-transparent lg:border-0 lg:backdrop-blur-none lg:w-full">
-              <button
-                onClick={handleDownload}
-                disabled={downloadStatus === 'loading'}
-                className="btn-primary w-full"
-              >
-                {downloadStatus === 'loading' ? '生成图片中...' : '下载图片'}
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleDownload}
+                  disabled={downloadStatus === 'loading'}
+                  className="btn-primary flex-1"
+                >
+                  {downloadStatus === 'loading' ? '生成图片中...' : unlocked ? '下载图片' : '下载预览图'}
+                </button>
+                {!unlocked && (
+                  <button
+                    type="button"
+                    onClick={() => setPayOpen(true)}
+                    className="btn-ghost shrink-0"
+                  >
+                    请杯奶茶
+                  </button>
+                )}
+              </div>
               {downloadStatus === 'err' && (
                 <p className="mt-2 text-sm text-center text-rose-600">下载失败，请重试</p>
               )}
               <p className="mt-2 text-xs text-center text-gray-500">
-                {isWeChat() ? '请长按图片保存，发微信时打开「原图」' : '发微信请打开「原图」，否则会被压缩变糊'}
+                {unlocked
+                  ? (isWeChat() ? '请长按图片保存，发微信时打开「原图」' : '发微信请打开「原图」，否则会被压缩变糊')
+                  : '预览图带水印。请开发者喝杯奶茶后，可下载无水印原图'}
               </p>
             </div>
           </div>
@@ -269,6 +294,9 @@ function App() {
         </div>
       )}
 
+      {payOpen && (
+        <UnlockModal onClose={() => setPayOpen(false)} onUnlocked={handleUnlocked} />
+      )}
     </div>
   )
 }
