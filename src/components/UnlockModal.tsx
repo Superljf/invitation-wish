@@ -16,6 +16,7 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [preview, setPreview] = useState<PreviewQr | null>(null)
+  const [unlockedHint, setUnlockedHint] = useState(false)
 
   const handleUnlock = async () => {
     setError('')
@@ -26,7 +27,7 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
         setError('口令不对，再核对一下吧')
         return
       }
-      onUnlocked()
+      setUnlockedHint(true)
     } finally {
       setLoading(false)
     }
@@ -34,70 +35,87 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/70 flex items-end sm:items-center justify-center p-4"
-      onClick={onClose}
+      className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+      onClick={unlockedHint ? undefined : onClose}
     >
       <div
         className="w-full max-w-sm lg:max-w-lg rounded-2xl bg-white p-5 lg:p-8 shadow-soft max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex items-start justify-between gap-3">
-          <h2 className="text-lg lg:text-xl font-semibold text-gray-800">请开发者喝杯奶茶</h2>
-          <div className="shrink-0 text-right leading-none">
-            <p className="text-[11px] text-gray-400 mb-1">一杯奶茶</p>
-            <p className="text-accent">
-              <span className="text-sm font-medium align-top">¥</span>
-              <span className="text-2xl font-semibold tracking-tight">{PAY_PRICE}</span>
+        {unlockedHint ? (
+          <>
+            <h2 className="text-lg lg:text-xl font-semibold text-gray-800">解锁成功</h2>
+            <div className="mt-4 rounded-xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm lg:text-[15px] text-rose-800 leading-relaxed">
+              口令请自己留着，不要发给别人。
+              <br />
+              一旦外传、多人使用，口令会失效，请柬也会重新带上水印。
+            </div>
+            <p className="mt-3 text-sm text-gray-500">现在可以下载无水印请柬了。</p>
+            <button type="button" className="btn-primary w-full mt-5" onClick={onUnlocked}>
+              我知道了
+            </button>
+          </>
+        ) : (
+          <>
+            <div className="flex items-start justify-between gap-3">
+              <h2 className="text-lg lg:text-xl font-semibold text-gray-800">请开发者喝杯奶茶</h2>
+              <div className="shrink-0 text-right leading-none">
+                <p className="text-[11px] text-gray-400 mb-1">一杯奶茶</p>
+                <p className="text-accent">
+                  <span className="text-sm font-medium align-top">¥</span>
+                  <span className="text-2xl font-semibold tracking-tight">{PAY_PRICE}</span>
+                </p>
+              </div>
+            </div>
+            <p className="mt-2 lg:mt-3 text-sm lg:text-[15px] text-gray-500 leading-relaxed">
+              专属制作，要是喜欢，扫码请我喝杯奶茶，
+              <br />
+              再加微信把截图发我，我回你一串口令。
+              <br />
+              输入后就能下载无水印请柬。
+              <br />
+              有改字、改版等定制需求，也可以加我微信说一声。
             </p>
-          </div>
-        </div>
-        <p className="mt-2 lg:mt-3 text-sm lg:text-[15px] text-gray-500 leading-relaxed">
-          专属制作，要是喜欢，扫码请我喝杯奶茶，
-          <br />
-          再加微信把截图发我，我回你一串口令。
-          <br />
-          输入后就能下载无水印请柬。
-          <br />
-          有改字、改版等定制需求，也可以加我微信说一声。
-        </p>
-        <div className="mt-4 lg:mt-6 grid grid-cols-2 gap-3 lg:gap-6">
-          <QrThumb
-            src={payQr}
-            title="扫码请奶茶"
-            caption="1. 扫码请奶茶"
-            extra={<p className="text-xs font-medium text-accent">¥{PAY_PRICE}</p>}
-            onOpen={() => setPreview({ src: payQr, title: '扫码请奶茶' })}
-          />
-          <QrThumb
-            src={contactQr}
-            title="加我微信"
-            caption="2. 加我微信"
-            onOpen={() => setPreview({ src: contactQr, title: '加我微信' })}
-          />
-        </div>
-        <label className="block mt-4 text-sm font-medium text-gray-700 mb-1.5">口令</label>
-        <input
-          type="text"
-          value={code}
-          onChange={e => setCode(e.target.value)}
-          className="input-modern tracking-widest uppercase"
-          placeholder="请输入专属口令"
-          autoCapitalize="characters"
-        />
-        {error && <p className="mt-2 text-sm text-rose-600">{error}</p>}
-        <div className="mt-4 flex gap-2">
-          <button type="button" className="btn-ghost flex-1" onClick={onClose}>
-            取消
-          </button>
-          <button
-            type="button"
-            className="btn-primary flex-1"
-            disabled={loading || !code.trim()}
-            onClick={handleUnlock}
-          >
-            {loading ? '请稍候...' : '确认'}
-          </button>
-        </div>
+            <div className="mt-4 lg:mt-6 grid grid-cols-2 gap-3 lg:gap-6">
+              <QrThumb
+                src={payQr}
+                title="扫码请奶茶"
+                caption="1. 扫码请奶茶"
+                extra={<p className="text-xs font-medium text-accent">¥{PAY_PRICE}</p>}
+                onOpen={() => setPreview({ src: payQr, title: '扫码请奶茶' })}
+              />
+              <QrThumb
+                src={contactQr}
+                title="加我微信"
+                caption="2. 加我微信"
+                onOpen={() => setPreview({ src: contactQr, title: '加我微信' })}
+              />
+            </div>
+            <label className="block mt-4 text-sm font-medium text-gray-700 mb-1.5">口令</label>
+            <input
+              type="text"
+              value={code}
+              onChange={e => setCode(e.target.value)}
+              className="input-modern tracking-widest uppercase"
+              placeholder="请输入专属口令"
+              autoCapitalize="characters"
+            />
+            {error && <p className="mt-2 text-sm text-rose-600">{error}</p>}
+            <div className="mt-4 flex gap-2">
+              <button type="button" className="btn-ghost flex-1" onClick={onClose}>
+                取消
+              </button>
+              <button
+                type="button"
+                className="btn-primary flex-1"
+                disabled={loading || !code.trim()}
+                onClick={handleUnlock}
+              >
+                {loading ? '请稍候...' : '确认'}
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
       {preview && (
