@@ -52,7 +52,13 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
           </div>
         </div>
         <p className="mt-2 lg:mt-3 text-sm lg:text-[15px] text-gray-500 leading-relaxed">
-          专属制作，要是喜欢，扫码请我喝杯奶茶，再加微信把截图发我，我回你一串口令。输入后就能下载无水印请柬。有改字、改版等定制需求，也可以加我微信说一声。
+          专属制作，要是喜欢，扫码请我喝杯奶茶，
+          <br />
+          再加微信把截图发我，我回你一串口令。
+          <br />
+          输入后就能下载无水印请柬。
+          <br />
+          有改字、改版等定制需求，也可以加我微信说一声。
         </p>
         <div className="mt-4 lg:mt-6 grid grid-cols-2 gap-3 lg:gap-6">
           <QrThumb
@@ -75,7 +81,7 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
           value={code}
           onChange={e => setCode(e.target.value)}
           className="input-modern tracking-widest uppercase"
-          placeholder="请输入口令"
+          placeholder="请输入专属口令"
           autoCapitalize="characters"
         />
         {error && <p className="mt-2 text-sm text-rose-600">{error}</p>}
