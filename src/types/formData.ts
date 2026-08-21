@@ -1,4 +1,4 @@
-import { FONT_HEITI, normalizeNameFont, DEFAULT_COUPLE_FONT_SIZE, DEFAULT_INVITE_NAME_FONT_SIZE, DEFAULT_TIME_LOCATION_FONT_SIZE, PREV_UNIFIED_FONT_SIZE } from '../utils/fonts'
+import { FONT_SONG, normalizeNameFont, DEFAULT_COUPLE_FONT_SIZE, DEFAULT_INVITE_NAME_FONT_SIZE, DEFAULT_TIME_LOCATION_FONT_SIZE, PREV_UNIFIED_FONT_SIZE } from '../utils/fonts'
 
 /** 统一编辑层数据类型 */
 export interface FormData {
@@ -42,7 +42,7 @@ export const defaultFormData: FormData = {
   inviteLine1: '敬备喜筵',
   inviteLine2: '恭请光临',
   inviteClosing: '敬邀',
-  nameFont: FONT_HEITI,
+  nameFont: FONT_SONG,
   coupleFontSize: DEFAULT_COUPLE_FONT_SIZE,
   inviteNameFontSize: DEFAULT_INVITE_NAME_FONT_SIZE,
   timeLocationFontSize: DEFAULT_TIME_LOCATION_FONT_SIZE,

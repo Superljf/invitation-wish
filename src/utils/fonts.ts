@@ -6,8 +6,8 @@ export const FONT_KAITI = "KaiTi, 'Kaiti SC', STKaiti, SimHei, STHeiti, 'Heiti S
 export const FONT_LISU = "LiSu, STLiti, STKaiti, SimHei, STHeiti, 'Heiti SC'"
 
 export const NAME_FONT_OPTIONS = [
-  { label: '黑体', value: FONT_HEITI },
   { label: '宋体', value: FONT_SONG },
+  { label: '黑体', value: FONT_HEITI },
   { label: '仿宋', value: FONT_FANGSONG },
   { label: '楷体', value: FONT_KAITI },
   { label: '隶书', value: FONT_LISU },
@@ -41,8 +41,8 @@ const LEGACY_FONT_MAP: Record<string, string> = {
 
 /** 旧数据里的 serif/sans-serif 在手机上会变成苹方，这里换成传统字体 */
 export function normalizeNameFont(font?: string) {
-  if (!font) return FONT_HEITI
+  if (!font) return FONT_SONG
   if (LEGACY_FONT_MAP[font]) return LEGACY_FONT_MAP[font]
-  if (/PingFang|苹方|serif|sans-serif/i.test(font)) return FONT_HEITI
+  if (/PingFang|苹方|serif|sans-serif/i.test(font)) return FONT_SONG
   return font
 }

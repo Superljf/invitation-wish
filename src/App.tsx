@@ -14,7 +14,7 @@ import { loadUnlocked, saveUnlocked } from './utils/unlock'
 // } from './api/invitation'
 
 const STORAGE_KEY = 'invitation-form-data'
-const TEMPLATE_KEY = 'invitation-template'
+const TEMPLATE_KEY = 'invitation-template-v2'
 
 function loadFormData(): FormData {
   try {
@@ -35,7 +35,7 @@ function loadTemplate(): TemplateId {
   } catch (_e) {
     /* ignore */
   }
-  return 1
+  return 5
 }
 
 function App() {
@@ -146,7 +146,7 @@ function App() {
             <section className="mb-6">
               <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">模板风格</p>
               <div className="flex flex-wrap gap-2">
-                {([1, 2, 3, 4, 5] as const).map(id => (
+                {([5, 1, 2, 3, 4] as const).map(id => (
                   <button
                     key={id}
                     onClick={() => setTemplateId(id)}
@@ -156,7 +156,7 @@ function App() {
                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
-                    {id === 1 ? '古典传统' : id === 2 ? '红金对称' : id === 3 ? '祥云边框' : id === 4 ? '竖排中式' : '素柬红框'}
+                    {id === 5 ? '素柬红框' : id === 1 ? '古典传统' : id === 2 ? '红金对称' : id === 3 ? '祥云边框' : '竖排中式'}
                   </button>
                 ))}
               </div>
