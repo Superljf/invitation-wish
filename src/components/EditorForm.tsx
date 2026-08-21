@@ -175,6 +175,18 @@ export function EditorForm({ data, onChange }: Props) {
         />
       </div>
       <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1.5">时间地点字号</label>
+        <select
+          value={data.timeLocationFontSize}
+          onChange={e => update('timeLocationFontSize', e.target.value)}
+          className="input-modern"
+        >
+          {FONT_SIZE_OPTIONS.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
+        </select>
+      </div>
+      <div>
         <label className="block text-sm font-medium text-gray-700 mb-1.5">敬邀语 第一行</label>
         <input
           type="text"

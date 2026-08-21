@@ -25,6 +25,7 @@ export const FONT_SIZE_OPTIONS = [
 
 export const DEFAULT_COUPLE_FONT_SIZE = '1.125rem'
 export const DEFAULT_INVITE_NAME_FONT_SIZE = '1.125rem'
+export const DEFAULT_TIME_LOCATION_FONT_SIZE = '1.125rem'
 
 const LEGACY_FONT_MAP: Record<string, string> = {
   "'SimSun', serif": FONT_SONG,
