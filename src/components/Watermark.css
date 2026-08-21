@@ -1,0 +1,39 @@
+.watermark-overlay {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.watermark-grid {
+  position: absolute;
+  left: -30%;
+  top: -30%;
+  width: 160%;
+  height: 160%;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-around;
+  justify-content: space-around;
+  gap: 28px 22px;
+  transform: rotate(-28deg);
+}
+
+.watermark-text {
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 8px;
+  white-space: nowrap;
+  font-family: SimHei, STHeiti, 'Heiti SC', 'STHeitiSC-Medium';
+}
+
+/* 红底请柬：淡金色，接近烫金文字 */
+.watermark-red .watermark-text {
+  color: rgba(212, 175, 55, 0.28);
+}
+
+/* 白底请柬：淡暗红，接近边框与标题 */
+.watermark-white .watermark-text {
+  color: rgba(139, 0, 0, 0.22);
+}

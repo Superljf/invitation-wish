@@ -36,7 +36,7 @@ export function EditorForm({ data, onChange }: Props) {
           value={data.honoree}
           onChange={e => update('honoree', e.target.value)}
           className="input-modern"
-          placeholder="我儿"
+          placeholder="如：我儿、小女"
         />
       </div>
       <div>
