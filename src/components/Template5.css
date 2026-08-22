@@ -25,7 +25,7 @@
   min-width: 0;
   min-height: 0;
   border: 1.5px solid #9b1b1b;
-  padding: 10px 8px 12px;
+  padding: 10px 8px 20px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -35,13 +35,13 @@
 }
 
 .template5-title {
-  font-size: 0.9rem;
+  font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: 8px;
   color: #9b1b1b;
   text-align: center;
   flex-shrink: 0;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
   font-family: SimSun, 'Songti SC', STSong, SimHei, STHeiti, 'Heiti SC';
 }
 
@@ -85,11 +85,11 @@
 
 .template5-col--location-sign {
   justify-content: space-between;
-  padding: 0 8px;
+  padding: 0 8px 18px;
 }
 
 .template5-col--time {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
 }
 
 .template5-block--signature {
@@ -97,7 +97,7 @@
   flex-direction: column;
   gap: 12px 4px;
   align-items: flex-start;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   margin-top: auto;
 }
 
@@ -107,11 +107,11 @@
 }
 
 .template5-col--recipient {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 .template5-col--date {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
 }
 
 .template5-col--couple {
@@ -120,7 +120,7 @@
 }
 
 .template5-col--invite {
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   gap: 3.5rem;
 }
 
