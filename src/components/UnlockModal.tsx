@@ -61,9 +61,9 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
               <h2 className="text-lg lg:text-xl font-semibold text-gray-800">请开发者喝杯奶茶</h2>
               <div className="shrink-0 text-right leading-none">
                 <p className="text-[11px] text-gray-400 mb-1">一杯奶茶</p>
-                <p className="text-accent">
+                <p className="text-accent whitespace-nowrap">
                   <span className="text-sm font-medium align-top">¥</span>
-                  <span className="text-2xl font-semibold tracking-tight">{PAY_PRICE}</span>
+                  <span className="text-xl font-semibold tracking-tight">{PAY_PRICE}</span>
                 </p>
               </div>
             </div>

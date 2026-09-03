@@ -1,6 +1,6 @@
 /** 收费与解锁配置。请替换 src/assets 下的收款码、加微信二维码图片。 */
 
-export const PAY_PRICE = '19.9'
+export const PAY_PRICE = '9.9~19.9'
 export const UNLOCK_SALT = 'invitation-card-unlock-v1'
 export const UNLOCK_STORAGE_KEY = 'invitation-unlocked'
 
