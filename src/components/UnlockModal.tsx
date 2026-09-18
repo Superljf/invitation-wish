@@ -68,9 +68,15 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
               </div>
             </div>
             <p className="mt-2 lg:mt-3 text-sm lg:text-[15px] text-gray-500 leading-relaxed">
-              推荐走爱发电：付完私信会发口令，填到下面就能下无水印原图。
-              微信里请直接点链接，不要从相册扫码。
+              推荐走爱发电。微信里请直接点下面按钮，不要从相册扫码。
             </p>
+            <div className="mt-3 rounded-xl border border-gray-100 bg-gray-50 px-3.5 py-3 text-xs lg:text-sm text-gray-600 leading-relaxed">
+              爱发电是创作者常用的收款平台，付款走微信 / 支付宝官方通道。
+              <br />
+              不用加我微信，也不用事先注册，付的时候验证手机号即可。
+              <br />
+              付完平台会发私信口令，填到本页就能下载无水印原图。
+            </div>
             <a
               href={AFDIAN_ITEM_URL}
               target="_blank"
