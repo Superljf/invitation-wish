@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { PAY_PRICE } from '../config/pay'
+import { AFDIAN_ITEM_URL, AFDIAN_PRICE, PAY_PRICE } from '../config/pay'
 import { verifyUnlockCode } from '../utils/unlock'
 import payQr from '../assets/wechat-pay.png'
 import contactQr from '../assets/wechat-contact.png'
@@ -68,26 +68,30 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
               </div>
             </div>
             <p className="mt-2 lg:mt-3 text-sm lg:text-[15px] text-gray-500 leading-relaxed">
-              专属制作，要是喜欢，扫码请我喝杯奶茶，
-              <br />
-              再加微信把截图发我，我回你一串口令。
-              <br />
-              输入后就能下载无水印请柬。
-              <br />
-              有改字、改版等定制需求，也可以加我微信说一声。
+              推荐走爱发电：付完私信会发口令，填到下面就能下无水印原图。
+              微信里请直接点链接，不要从相册扫码。
             </p>
-            <div className="mt-4 lg:mt-6 grid grid-cols-2 gap-3 lg:gap-6">
+            <a
+              href={AFDIAN_ITEM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary mt-4 lg:mt-5 w-full inline-flex items-center justify-center text-center no-underline"
+            >
+              去爱发电付款 ¥{AFDIAN_PRICE}
+            </a>
+            <p className="mt-4 text-xs text-gray-400">也可以扫微信。收款码不会自动发口令，截图加微信后我回你。</p>
+            <div className="mt-2 lg:mt-3 grid grid-cols-2 gap-3 lg:gap-6">
               <QrThumb
                 src={payQr}
                 title="扫码请奶茶"
-                caption="1. 扫码请奶茶"
+                caption="微信收款"
                 extra={<p className="text-xs font-medium text-accent">¥{PAY_PRICE}</p>}
                 onOpen={() => setPreview({ src: payQr, title: '扫码请奶茶' })}
               />
               <QrThumb
                 src={contactQr}
                 title="加我微信"
-                caption="2. 加我微信"
+                caption="加微信（改版定制）"
                 onOpen={() => setPreview({ src: contactQr, title: '加我微信' })}
               />
             </div>

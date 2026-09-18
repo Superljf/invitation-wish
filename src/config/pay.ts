@@ -1,11 +1,15 @@
 /** 收费与解锁配置。请替换 src/assets 下的收款码、加微信二维码图片。 */
 
 export const PAY_PRICE = '9.9~19.9'
+export const AFDIAN_PRICE = '9.90'
+export const AFDIAN_ITEM_URL =
+  'https://afdian.com/item/3ae79c1cb33d11f1afd75254001e7c00'
 export const UNLOCK_SALT = 'invitation-card-unlock-v1'
 export const UNLOCK_STORAGE_KEY = 'invitation-unlocked'
 
 /** 专属码 SHA-256 哈希，明文只放在本地 unlock-codes.local.txt */
 export const UNLOCK_HASHES: string[] = [
+  '9fbf07c3ce2dee09d2d9b28354b225f4db7f6e2eebdda16156747b2a8c3c4a2f',
   '9c1f5862a331f8835cdf61cf390a05097dbeade039e984c2f47d1801519989bd',
   'c388db7b919f45ddd8ff5b3f8c5a12448822793583003707adbc7a90645c7f5a',
   'd1f279409a31ceffbc0718f02d5cc7308db1b2617a362f4b2ed299cfb352b447',
