@@ -7,11 +7,12 @@ import contactQr from '../assets/wechat-contact.png'
 interface Props {
   onClose: () => void
   onUnlocked: () => void
+  fromDownload?: boolean
 }
 
 type PreviewQr = { src: string; title: string }
 
-export function UnlockModal({ onClose, onUnlocked }: Props) {
+export function UnlockModal({ onClose, onUnlocked, fromDownload }: Props) {
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -68,6 +69,11 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
                 </p>
               </div>
             </div>
+            {fromDownload && (
+              <p className="mt-2 lg:mt-3 text-sm lg:text-[15px] text-gray-600 leading-relaxed">
+                继续下载无水印原图，请开发者喝杯奶茶。付完就能解开。
+              </p>
+            )}
             <p className="mt-2 lg:mt-3 text-sm lg:text-[15px] text-gray-500 leading-relaxed">
               推荐走爱发电。微信里请直接点下面按钮，不要从相册扫码。
             </p>

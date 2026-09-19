@@ -55,6 +55,7 @@ function App() {
   const [freeUsed, setFreeUsed] = useState(10)
   const [copyStatus, setCopyStatus] = useState<'idle' | 'ok' | 'err'>('idle')
   const [payOpen, setPayOpen] = useState(false)
+  const [payNudged, setPayNudged] = useState(false)
   const [hideMark, setHideMark] = useState(false)
   const previewRef = useRef<HTMLDivElement>(null)
   const freeLeft = remainingFree(freeUsed)
@@ -127,6 +128,13 @@ function App() {
 
   const handleDownload = async () => {
     if (!previewRef.current) return
+    if (!unlocked && quotaReady && !canOriginal) {
+      if (!payNudged) {
+        setPayNudged(true)
+        setPayOpen(true)
+        return
+      }
+    }
     const originalThisTime = canOriginal
     setDownloadStatus('loading')
     try {
@@ -366,7 +374,11 @@ function App() {
       )}
 
       {payOpen && (
-        <UnlockModal onClose={() => setPayOpen(false)} onUnlocked={handleUnlocked} />
+        <UnlockModal
+          fromDownload={!canOriginal}
+          onClose={() => setPayOpen(false)}
+          onUnlocked={handleUnlocked}
+        />
       )}
     </div>
   )
