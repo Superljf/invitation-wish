@@ -8,7 +8,7 @@ export function Template3({ data }: Props) {
   return (
     <div className="w-[360px] h-[600px] bg-white rounded-xl shadow-xl p-8 flex flex-col items-center justify-between border-4 border-zhong-red overflow-hidden relative" style={{ fontFamily: data.nameFont }}>
       <div className="text-2xl font-bold text-zhong-red mt-4">{data.title}</div>
-      <div className="text-lg text-zhong-gold font-semibold">{data.namesLine}</div>
+      <div className="text-lg text-zhong-gold" style={{ fontWeight: data.nameBold ? 'bold' : 'normal' }}>{data.namesLine}</div>
       <div className="text-center text-zhong-red space-y-1 text-sm">
         <div>谨定于</div>
         <div>{data.solar}</div>

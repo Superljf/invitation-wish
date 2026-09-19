@@ -23,6 +23,7 @@ export interface FormData {
   coupleFontSize: string // 新郎新娘字号
   inviteNameFontSize: string // 敬邀人字号
   timeLocationFontSize: string // 时间、地点字号
+  nameBold: boolean // 仅姓名加粗
 }
 
 export const defaultFormData: FormData = {
@@ -46,6 +47,7 @@ export const defaultFormData: FormData = {
   coupleFontSize: DEFAULT_COUPLE_FONT_SIZE,
   inviteNameFontSize: DEFAULT_INVITE_NAME_FONT_SIZE,
   timeLocationFontSize: DEFAULT_TIME_LOCATION_FONT_SIZE,
+  nameBold: false,
 }
 
 /** 合并请柬数据；旧数据没有敬邀姓名时，回退到新郎/新娘姓名 */
@@ -77,6 +79,15 @@ export function mergeFormData(partial?: Partial<FormData> | null): FormData {
     merged.coupleFontSize = DEFAULT_COUPLE_FONT_SIZE
     merged.inviteNameFontSize = DEFAULT_INVITE_NAME_FONT_SIZE
     merged.timeLocationFontSize = DEFAULT_TIME_LOCATION_FONT_SIZE
+  }
+  merged.nameBold = merged.nameBold === true
+  try {
+    if (!localStorage.getItem('invitation-name-bold-v1')) {
+      merged.nameBold = false
+      localStorage.setItem('invitation-name-bold-v1', '1')
+    }
+  } catch {
+    /* ignore */
   }
   if (!merged.coupleFontSize) merged.coupleFontSize = DEFAULT_COUPLE_FONT_SIZE
   if (!merged.inviteNameFontSize) merged.inviteNameFontSize = DEFAULT_INVITE_NAME_FONT_SIZE

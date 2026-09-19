@@ -19,11 +19,11 @@ const TABS: { id: Tab; label: string }[] = [
 export function EditorForm({ data, onChange }: Props) {
   const [tab, setTab] = useState<Tab>('basic')
 
-  const update = (k: keyof FormData, v: string) => {
+  const update = <K extends keyof FormData>(k: K, v: FormData[K]) => {
     const next = { ...data, [k]: v }
-    if (k === 'solarDate') next.solarWeekday = getWeekday(v)
-    if (k === 'groom' && data.inviteName1 === data.groom) next.inviteName1 = v
-    if (k === 'bride' && data.inviteName2 === data.bride) next.inviteName2 = v
+    if (k === 'solarDate' && typeof v === 'string') next.solarWeekday = getWeekday(v)
+    if (k === 'groom' && data.inviteName1 === data.groom && typeof v === 'string') next.inviteName1 = v
+    if (k === 'bride' && data.inviteName2 === data.bride && typeof v === 'string') next.inviteName2 = v
     onChange(next)
   }
 
@@ -101,11 +101,17 @@ export function EditorForm({ data, onChange }: Props) {
 
       {tab === 'type' && (
         <div className="grid grid-cols-2 gap-x-2 gap-y-3">
-          <Field label="姓名字体" className="col-span-2">
+          <Field label="姓名字体">
             <select className="input-compact" style={{ fontFamily: data.nameFont }} value={data.nameFont} onChange={e => update('nameFont', e.target.value)}>
               {NAME_FONT_OPTIONS.map(opt => (
                 <option key={opt.label} value={opt.value}>{opt.label}</option>
               ))}
+            </select>
+          </Field>
+          <Field label="姓名加粗">
+            <select className="input-compact" value={data.nameBold ? '1' : '0'} onChange={e => update('nameBold', e.target.value === '1')}>
+              <option value="0">不加粗</option>
+              <option value="1">加粗</option>
             </select>
           </Field>
           <Field label="新人字号">

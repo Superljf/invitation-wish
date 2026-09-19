@@ -16,8 +16,8 @@ export function Template1({ data }: Props) {
       </div>
       <div className="text-center">为</div>
       <div className="text-center space-y-1">
-        <div className="text-lg font-bold">{data.names.groom}</div>
-        <div className="text-lg font-bold">{data.names.bride}</div>
+        <div className="text-lg" style={{ fontWeight: data.nameBold ? 'bold' : 'normal' }}>{data.names.groom}</div>
+        <div className="text-lg" style={{ fontWeight: data.nameBold ? 'bold' : 'normal' }}>{data.names.bride}</div>
       </div>
       <div>{data.ceremonyText}</div>
       <div className="text-center space-y-1">

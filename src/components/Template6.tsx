@@ -17,7 +17,7 @@ export function Template6({ data }: Props) {
         <Bamboo className="template6-bamboo-faint" stroke="#c9b79a" />
         <div className="template6-xi">囍囍</div>
         <Clouds className="template6-cloud" fill="#c4a24a" />
-        <div className="template6-names">
+        <div className="template6-names" style={{ fontWeight: data.nameBold ? 'bold' : 'normal' }}>
           <span>{data.names.groom.replace(' 先生', '')}</span>
           <span className="template6-amp">&</span>
           <span>{data.names.bride.replace(' 女士', '')}</span>

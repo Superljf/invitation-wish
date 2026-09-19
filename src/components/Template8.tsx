@@ -20,7 +20,7 @@ export function Template8({ data }: Props) {
         <Flourish className="template8-flourish" />
         <p className="template8-sub">{data.title}</p>
         <WaxSeal className="template8-seal" />
-        <div className="template8-names">
+        <div className="template8-names" style={{ fontWeight: data.nameBold ? 'bold' : 'normal' }}>
           {groom}<span>　</span>{bride}
         </div>
         <div className="template8-meta">

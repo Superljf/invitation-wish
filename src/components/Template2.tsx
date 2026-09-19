@@ -13,8 +13,8 @@ export function Template2({ data }: Props) {
         <div>{data.solar}</div>
         <div>{data.lunar}</div>
         <div className="mt-2">为</div>
-        <div className="font-bold text-base">{data.names[0]}</div>
-        <div className="font-bold text-base">{data.names[1]}</div>
+        <div className="text-base" style={{ fontWeight: data.nameBold ? 'bold' : 'normal' }}>{data.names[0]}</div>
+        <div className="text-base" style={{ fontWeight: data.nameBold ? 'bold' : 'normal' }}>{data.names[1]}</div>
         <div className="mt-2">{data.ceremony}</div>
         <div>{data.invite[0]}</div>
         <div>{data.invite[1]}</div>

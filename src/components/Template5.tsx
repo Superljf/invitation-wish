@@ -19,13 +19,15 @@ function renderCol(
   colClass: string,
   customFont?: string,
   boldPrefix?: string,
-  parallelFontSize?: string
+  parallelFontSize?: string,
+  namesBold?: boolean,
 ) {
   return (
     <div className={`template5-col ${colClass}`}>
       {lines.map((line, i) => {
         const v = variable[i]
         if (Array.isArray(line)) {
+          const bold = Array.isArray(v) && namesBold
           return (
             <div key={i} className="template5-line template5-line--parallel">
               <div className="template5-line-inner" style={{
@@ -33,14 +35,14 @@ function renderCol(
                 fontSize: parallelFontSize,
                 ...verticalStyle,
                 color: INK,
-                fontWeight: Array.isArray(v) && v[0] ? 700 : 500,
+                fontWeight: bold ? 'bold' : 'normal',
               }}>{line[0]}</div>
               <div className="template5-line-inner" style={{
                 fontFamily: customFont,
                 fontSize: parallelFontSize,
                 ...verticalStyle,
                 color: INK,
-                fontWeight: Array.isArray(v) && v[1] ? 700 : 500,
+                fontWeight: bold ? 'bold' : 'normal',
               }}>{line[1]}</div>
             </div>
           )
@@ -52,9 +54,7 @@ function renderCol(
               ...verticalStyle,
               color: INK,
             }}>
-              {i === 0 && boldPrefix ? (
-                <span style={{ fontWeight: 'bold' }}>{boldPrefix}</span>
-              ) : null}
+              {i === 0 && boldPrefix ? <span>{boldPrefix}</span> : null}
               {line}
             </div>
           </div>
@@ -64,17 +64,24 @@ function renderCol(
   )
 }
 
-function renderSimpleCol(lines: string[], variable: boolean[], colClass: string, fontWeight?: string, customFont?: string, fontSize?: string) {
+function renderSimpleCol(
+  lines: string[],
+  variable: boolean[],
+  colClass: string,
+  customFont?: string,
+  fontSize?: string,
+  namesBold?: boolean,
+) {
   return (
     <div className={`template5-col ${colClass}`}>
       {lines.map((line, i) => (
         <div key={i} className="template5-line">
           <div className="template5-line-inner" style={{
-            fontWeight: variable[i] ? 'bold' : fontWeight,
             fontFamily: customFont,
             fontSize: fontSize,
             ...verticalStyle,
             color: INK,
+            fontWeight: variable[i] && namesBold ? 'bold' : 'normal',
           }}>{line}</div>
         </div>
       ))}
@@ -90,32 +97,31 @@ export function Template5({ data }: Props) {
         <div className="template5-card">
           <div className="template5-title">{data.title}</div>
           <div className="template5-body">
-            {renderSimpleCol(data.recipientLines, data.recipientVariable, 'template5-col--recipient', 'bold', data.nameFont)}
+            {renderSimpleCol(data.recipientLines, data.recipientVariable, 'template5-col--recipient', data.nameFont, undefined, data.nameBold)}
             {renderCol(data.dateLines, data.dateVariable, 'template5-col--date', undefined, data.honoree)}
-            {renderCol(data.coupleLines, data.coupleVariable, 'template5-col--couple', data.nameFont, undefined, data.coupleFontSize)}
+            {renderCol(data.coupleLines, data.coupleVariable, 'template5-col--couple', data.nameFont, undefined, data.coupleFontSize, data.nameBold)}
             {renderSimpleCol(data.inviteLines, data.inviteVariable, 'template5-col--invite')}
-            {renderSimpleCol(data.timeLines, data.timeVariable, 'template5-col--time', undefined, undefined, data.timeLocationFontSize)}
+            {renderSimpleCol(data.timeLines, data.timeVariable, 'template5-col--time', undefined, data.timeLocationFontSize)}
             <div className="template5-col template5-col--location-sign">
-              {renderSimpleCol(data.locationLines, data.locationVariable, 'template5-col--location', undefined, undefined, data.timeLocationFontSize)}
+              {renderSimpleCol(data.locationLines, data.locationVariable, 'template5-col--location', undefined, data.timeLocationFontSize)}
               <div className="template5-block template5-block--signature">
                 {data.signatureLines.map((line, i) => {
-                  const v = data.signatureVariable[i]
                   if (Array.isArray(line)) {
                     return (
                       <div key={i} className="template5-line template5-line--parallel">
                         <div className="template5-line-inner" style={{
                           fontFamily: data.nameFont,
-                          fontWeight: 'bold',
                           fontSize: data.inviteNameFontSize,
                           ...verticalStyle,
                           color: INK,
+                          fontWeight: data.nameBold ? 'bold' : 'normal',
                         }}>{line[0]}</div>
                         <div className="template5-line-inner" style={{
                           fontFamily: data.nameFont,
-                          fontWeight: 'bold',
                           fontSize: data.inviteNameFontSize,
                           ...verticalStyle,
                           color: INK,
+                          fontWeight: data.nameBold ? 'bold' : 'normal',
                         }}>{line[1]}</div>
                       </div>
                     )

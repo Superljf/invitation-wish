@@ -1,4 +1,4 @@
-/** 注入 public/fonts 下的开源中式字体 */
+/** 注入 public/fonts 下的开源中式字体。只注册 400，加粗走浏览器伪粗，避免 Regular 被标成 700 后看不出变化。 */
 export function injectWebFonts() {
   const base = import.meta.env.BASE_URL
   const faces = [
@@ -8,13 +8,7 @@ export function injectWebFonts() {
     { family: 'Ma Shan Zheng', file: 'MaShanZheng-Regular.ttf' },
   ]
   const css = faces
-    .flatMap(f => {
-      const src = `url('${base}fonts/${f.file}') format('truetype')`
-      return [
-        `@font-face{font-family:'${f.family}';src:${src};font-weight:400;font-style:normal;font-display:swap;}`,
-        `@font-face{font-family:'${f.family}';src:${src};font-weight:700;font-style:normal;font-display:swap;}`,
-      ]
-    })
+    .map(f => `@font-face{font-family:'${f.family}';src:url('${base}fonts/${f.file}') format('truetype');font-weight:400;font-style:normal;font-display:swap;}`)
     .join('')
   const el = document.createElement('style')
   el.setAttribute('data-webfonts', '1')
@@ -23,10 +17,8 @@ export function injectWebFonts() {
 
   faces.forEach(f => {
     const url = `url(${JSON.stringify(`${base}fonts/${f.file}`)})`
-    ;(['400', '700'] as const).forEach(weight => {
-      const face = new FontFace(f.family, url, { weight, style: 'normal' })
-      face.load().then(loaded => document.fonts.add(loaded)).catch(() => {})
-    })
+    const face = new FontFace(f.family, url, { weight: '400', style: 'normal' })
+    face.load().then(loaded => document.fonts.add(loaded)).catch(() => {})
   })
 }
 
