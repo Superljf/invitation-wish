@@ -1,0 +1,100 @@
+.template6 {
+  width: 360px;
+  height: 600px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  box-shadow: 0 18px 40px rgba(80, 16, 24, 0.22);
+  font-family: SimSun, 'Songti SC', STSong, 'Noto Serif SC', serif;
+}
+
+.template6-red {
+  width: 92px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #8a1c24 0%, #5c1016 100%);
+  position: relative;
+}
+
+.template6-bamboo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.template6-paper {
+  flex: 1;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(255, 255, 255, 0.55), transparent 50%),
+    #f3ead8;
+  color: #5c1016;
+  padding: 36px 22px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.template6-bamboo-faint {
+  position: absolute;
+  right: -10px;
+  top: 40px;
+  width: 70px;
+  height: 86%;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.template6-cloud {
+  width: 120px;
+  height: 22px;
+  margin: -8px 0 18px;
+  opacity: 0.7;
+}
+
+.template6-xi {
+  font-size: 52px;
+  line-height: 1;
+  letter-spacing: 6px;
+  font-weight: 700;
+  color: #8a1c24;
+  margin-bottom: 28px;
+}
+
+.template6-names {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 22px;
+}
+
+.template6-amp {
+  font-size: 13px;
+  font-weight: 400;
+  opacity: 0.55;
+}
+
+.template6-body,
+.template6-invite {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.9;
+  letter-spacing: 0.08em;
+}
+
+.template6-invite {
+  margin-top: 10px;
+  opacity: 0.9;
+}
+
+.template6-meta {
+  margin-top: auto;
+  padding-top: 28px;
+  font-size: 12px;
+  line-height: 1.85;
+  letter-spacing: 0.04em;
+  opacity: 0.92;
+}

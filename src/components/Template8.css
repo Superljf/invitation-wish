@@ -1,0 +1,85 @@
+.template8 {
+  width: 360px;
+  height: 600px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f6f1e8;
+  box-shadow: 0 16px 36px rgba(60, 50, 40, 0.14);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Times New Roman', 'Songti SC', SimSun, serif;
+  color: #5a5348;
+}
+
+.template8-photo {
+  height: 248px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #ece6db 0%, #ddd4c6 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.template8-bouquet {
+  width: 86%;
+  height: 92%;
+}
+
+.template8-flourish {
+  width: 140px;
+  height: 16px;
+  margin: 6px 0 2px;
+}
+
+.template8-body {
+  flex: 1;
+  padding: 22px 28px 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.template8-en {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  color: #6e675c;
+}
+
+.template8-sub {
+  margin: 8px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  color: #8a8276;
+}
+
+.template8-seal {
+  width: 44px;
+  height: 44px;
+  margin: 10px 0 12px;
+}
+
+.template8-names {
+  font-size: 18px;
+  letter-spacing: 0.22em;
+  color: #4a453c;
+  margin-bottom: 16px;
+}
+
+.template8-meta {
+  margin-top: auto;
+  font-size: 12px;
+  line-height: 1.9;
+  letter-spacing: 0.08em;
+}
+
+.template8-place {
+  margin: 8px 0 0;
+  font-style: italic;
+  color: #7a7368;
+}

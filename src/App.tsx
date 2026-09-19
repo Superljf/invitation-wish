@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { EditorForm } from './components/EditorForm'
-import { Preview, type TemplateId } from './components/Preview'
+import { Preview, TEMPLATE_LABEL, type TemplateId } from './components/Preview'
 import { Watermark } from './components/Watermark'
 import { UnlockModal } from './components/UnlockModal'
 import { mergeFormData, type FormData } from './types/formData'
 import { downloadNodeAsPng, isWeChat } from './utils/downloadImage'
-import { loadUnlocked, saveUnlocked } from './utils/unlock'
+import { consumeFreeDownload, hydrateFreeUsed, loadUnlocked, remainingFree, saveUnlocked } from './utils/unlock'
 // import {
 //   saveInvitation,
 //   getInvitation,
@@ -31,7 +32,7 @@ function loadFormData(): FormData {
 function loadTemplate(): TemplateId {
   try {
     const t = localStorage.getItem(TEMPLATE_KEY)
-    if (['1', '2', '3', '4', '5'].includes(t || '')) return Number(t) as TemplateId
+    if (['1', '2', '3', '4', '5', '6', '8', '11'].includes(t || '')) return Number(t) as TemplateId
   } catch (_e) {
     /* ignore */
   }
@@ -49,8 +50,13 @@ function App() {
   const [downloadStatus, setDownloadStatus] = useState<'idle' | 'loading' | 'err'>('idle')
   const [wechatImage, setWechatImage] = useState<string | null>(null)
   const [unlocked, setUnlocked] = useState(loadUnlocked)
+  const [quotaReady, setQuotaReady] = useState(false)
+  const [freeUsed, setFreeUsed] = useState(10)
   const [payOpen, setPayOpen] = useState(false)
+  const [hideMark, setHideMark] = useState(false)
   const previewRef = useRef<HTMLDivElement>(null)
+  const freeLeft = remainingFree(freeUsed)
+  const canOriginal = unlocked || (quotaReady && freeLeft > 0)
 
   // useEffect(() => {
   //   const id = new URLSearchParams(location.search).get('id')
@@ -71,6 +77,18 @@ function App() {
   useEffect(() => {
     localStorage.setItem(TEMPLATE_KEY, String(templateId))
   }, [templateId])
+
+  useEffect(() => {
+    let alive = true
+    hydrateFreeUsed().then(n => {
+      if (!alive) return
+      setFreeUsed(n)
+      setQuotaReady(true)
+    })
+    return () => {
+      alive = false
+    }
+  }, [])
 
   // const handleSave = async () => {
   //   setSaveStatus('loading')
@@ -107,11 +125,21 @@ function App() {
 
   const handleDownload = async () => {
     if (!previewRef.current) return
+    const originalThisTime = canOriginal
     setDownloadStatus('loading')
     try {
+      if (originalThisTime && !unlocked) {
+        flushSync(() => setHideMark(true))
+        await new Promise<void>(resolve => {
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+        })
+      }
       const filename = `请柬-${formData.groom}-${formData.bride}.jpg`
       const wechatUrl = await downloadNodeAsPng(previewRef.current, filename)
       if (wechatUrl) setWechatImage(wechatUrl)
+      if (originalThisTime && !unlocked) {
+        setFreeUsed(await consumeFreeDownload())
+      }
       setDownloadStatus('idle')
     } catch (e) {
       if (e instanceof DOMException && e.name === 'AbortError') {
@@ -120,6 +148,8 @@ function App() {
       }
       console.error('下载请柬图片失败', e)
       setDownloadStatus('err')
+    } finally {
+      setHideMark(false)
     }
   }
 
@@ -133,10 +163,12 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-100">
       <header className="hidden lg:block sticky top-0 z-10 backdrop-blur-md bg-white/70 border-b border-gray-200/50 shadow-sm">
         <div className="px-4 sm:px-6 py-4">
-          <h1 className="text-xl font-semibold text-gray-800 tracking-tight">
-            中式婚礼请柬生成器
+          <h1 className="font-display italic text-[1.75rem] font-medium leading-none text-gray-800 tracking-wide">
+            Hong Tie
           </h1>
-          <p className="text-sm text-gray-500 mt-0.5">在线定制 · 传统雅致</p>
+          <p className="mt-1.5 text-[10px] uppercase tracking-[0.32em] text-gray-400">
+            The Red Card
+          </p>
         </div>
       </header>
 
@@ -146,7 +178,7 @@ function App() {
             <section className="mb-6">
               <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">模板风格</p>
               <div className="flex flex-wrap gap-2">
-                {([5, 1, 2, 3, 4] as const).map(id => (
+                {([5, 1, 2, 3, 4, 6, 8, 11] as const).map(id => (
                   <button
                     key={id}
                     onClick={() => setTemplateId(id)}
@@ -156,7 +188,7 @@ function App() {
                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
-                    {id === 5 ? '素柬红框' : id === 1 ? '古典传统' : id === 2 ? '红金对称' : id === 3 ? '祥云边框' : '竖排中式'}
+                    {TEMPLATE_LABEL[id]}
                   </button>
                 ))}
               </div>
@@ -236,20 +268,31 @@ function App() {
 
         <main className="flex-1 flex justify-center items-start p-4 sm:p-6 overflow-auto min-h-0">
           <div className="flex flex-col items-center gap-4 w-full max-w-[360px]">
-            <div ref={previewRef} className="relative inline-block">
-              <Preview formData={formData} templateId={templateId} />
-              {!unlocked && <Watermark variant={templateId === 3 || templateId === 5 ? 'white' : 'red'} />}
+            <div className="relative inline-block">
+              <div ref={previewRef} className="relative inline-block">
+                <Preview formData={formData} templateId={templateId} />
+                {!unlocked && !hideMark && <Watermark variant={templateId === 3 || templateId === 5 || templateId === 6 || templateId === 8 || templateId === 11 ? 'white' : 'red'} />}
+              </div>
+              {hideMark && (
+                <div className="absolute inset-0 bg-white/90 flex items-center justify-center text-sm text-gray-500">
+                  生成图片中...
+                </div>
+              )}
             </div>
             <div className="fixed inset-x-0 bottom-0 z-20 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] bg-white/90 backdrop-blur border-t border-gray-100 lg:static lg:inset-auto lg:p-0 lg:bg-transparent lg:border-0 lg:backdrop-blur-none lg:w-full">
               <div className="flex gap-2">
                 <button
                   onClick={handleDownload}
-                  disabled={downloadStatus === 'loading'}
+                  disabled={downloadStatus === 'loading' || (!unlocked && !quotaReady)}
                   className="btn-primary flex-1"
                 >
-                  {downloadStatus === 'loading' ? '生成图片中...' : unlocked ? '下载图片' : '下载预览图'}
+                  {downloadStatus === 'loading'
+                    ? '生成图片中...'
+                    : canOriginal || !quotaReady
+                      ? '下载图片'
+                      : '下载预览图'}
                 </button>
-                {!unlocked && (
+                {quotaReady && !canOriginal && (
                   <button
                     type="button"
                     onClick={() => setPayOpen(true)}
@@ -263,7 +306,7 @@ function App() {
                 <p className="mt-2 text-sm text-center text-rose-600">下载失败，请重试</p>
               )}
               <p className="mt-2 text-xs text-center text-gray-500">
-                {unlocked
+                {canOriginal || !quotaReady
                   ? (isWeChat() ? '请长按图片保存，发微信时打开「原图」' : '发微信请打开「原图」，否则会被压缩变糊')
                   : '预览图带水印。请开发者喝杯奶茶后，可下载无水印原图'}
               </p>

@@ -14,6 +14,7 @@ export default {
       fontFamily: {
         serif: ['SimHei', 'STHeiti', '"Heiti SC"', '"STHeitiSC-Medium"'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
       },
       boxShadow: {
         'soft': '0 2px 15px -3px rgba(0,0,0,0.07), 0 10px 20px -2px rgba(0,0,0,0.04)',

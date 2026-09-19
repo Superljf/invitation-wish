@@ -6,6 +6,11 @@ export const AFDIAN_ITEM_URL =
   'https://afdian.com/item/3ae79c1cb33d11f1afd75254001e7c00'
 export const UNLOCK_SALT = 'invitation-card-unlock-v1'
 export const UNLOCK_STORAGE_KEY = 'invitation-unlocked'
+export const FREE_DOWNLOAD_LIMIT = 10
+/** 次数分写在 cookie / localStorage / IndexedDB，避免只清一项就重置 */
+export const DOWNLOAD_COUNT_KEY = 'iw.d1'
+export const DOWNLOAD_COUNT_COOKIE = 'iw_d'
+export const DOWNLOAD_COUNT_IDB = 'iwdb'
 
 /** 专属码 SHA-256 哈希，明文只放在本地 unlock-codes.local.txt */
 export const UNLOCK_HASHES: string[] = [

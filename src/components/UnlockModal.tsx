@@ -39,9 +39,10 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
       onClick={unlockedHint ? undefined : onClose}
     >
       <div
-        className="w-full max-w-sm lg:max-w-lg rounded-2xl bg-white p-5 lg:p-8 shadow-soft max-h-[90vh] overflow-y-auto"
+        className="w-full max-w-sm lg:max-w-lg rounded-2xl bg-white shadow-soft max-h-[90vh] overflow-hidden flex flex-col"
         onClick={e => e.stopPropagation()}
       >
+        <div className="p-5 lg:p-8 overflow-y-auto">
         {unlockedHint ? (
           <>
             <h2 className="text-lg lg:text-xl font-semibold text-gray-800">解锁成功</h2>
@@ -126,6 +127,7 @@ export function UnlockModal({ onClose, onUnlocked }: Props) {
             </div>
           </>
         )}
+        </div>
       </div>
 
       {preview && (
