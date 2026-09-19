@@ -85,7 +85,7 @@ function renderSimpleCol(lines: string[], variable: boolean[], colClass: string,
 /** 白底黑字朱红双框竖排素柬 */
 export function Template5({ data }: Props) {
   return (
-    <div className="template5" style={{ width: '360px', height: '600px' }}>
+    <div className="template5" style={{ width: '360px', height: '600px', fontFamily: data.nameFont }}>
       <div className="template5-frame">
         <div className="template5-card">
           <div className="template5-title">{data.title}</div>

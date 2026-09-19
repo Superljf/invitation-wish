@@ -4,8 +4,17 @@ export const FONT_SONG = "SimSun, 'Songti SC', STSong, SimHei, STHeiti, 'Heiti S
 export const FONT_FANGSONG = "FangSong, STFangsong, STFangSong, SimHei, STHeiti, 'Heiti SC'"
 export const FONT_KAITI = "KaiTi, 'Kaiti SC', STKaiti, SimHei, STHeiti, 'Heiti SC'"
 export const FONT_LISU = "LiSu, STLiti, STKaiti, SimHei, STHeiti, 'Heiti SC'"
+/** 开源字体，放在 public/fonts，全端可显示 */
+export const FONT_WENKAI = "'LXGW WenKai Lite', KaiTi, STKaiti, SimHei, STHeiti"
+export const FONT_ZHISONG = "'LXGW Neo ZhiSong', SimSun, STSong, SimHei, STHeiti"
+export const FONT_ZHUQUE = "'Zhuque Fangsong', FangSong, STFangsong, SimHei, STHeiti"
+export const FONT_MASHAN = "'Ma Shan Zheng', KaiTi, STKaiti, SimHei, STHeiti"
 
 export const NAME_FONT_OPTIONS = [
+  { label: '朱雀仿宋', value: FONT_ZHUQUE },
+  { label: '霞鹜文楷', value: FONT_WENKAI },
+  { label: '新晰宋', value: FONT_ZHISONG },
+  { label: '马善政楷', value: FONT_MASHAN },
   { label: '宋体', value: FONT_SONG },
   { label: '黑体', value: FONT_HEITI },
   { label: '仿宋', value: FONT_FANGSONG },
@@ -41,8 +50,9 @@ const LEGACY_FONT_MAP: Record<string, string> = {
 
 /** 旧数据里的 serif/sans-serif 在手机上会变成苹方，这里换成传统字体 */
 export function normalizeNameFont(font?: string) {
-  if (!font) return FONT_SONG
+  if (!font) return FONT_ZHUQUE
   if (LEGACY_FONT_MAP[font]) return LEGACY_FONT_MAP[font]
-  if (/PingFang|苹方|serif|sans-serif/i.test(font)) return FONT_SONG
+  if (/PingFang|苹方/i.test(font)) return FONT_ZHUQUE
+  if (/(?:^|,\s*)(?:serif|sans-serif)\s*$/i.test(font)) return FONT_ZHUQUE
   return font
 }

@@ -84,7 +84,7 @@ function renderSimpleCol(lines: string[], variable: boolean[], colClass: string,
 
 export function Template4({ data }: Props) {
   return (
-    <div className="template4" style={{ width: '360px', height: '600px' }}>
+    <div className="template4" style={{ width: '360px', height: '600px', fontFamily: data.nameFont }}>
       <div className="template4-card">
         <div className="template4-title">{data.title}</div>
         <div className="template4-body">

@@ -7,6 +7,7 @@ import { UnlockModal } from './components/UnlockModal'
 import { mergeFormData, type FormData } from './types/formData'
 import { downloadNodeAsPng, isWeChat } from './utils/downloadImage'
 import { consumeFreeDownload, hydrateFreeUsed, loadUnlocked, remainingFree, saveUnlocked } from './utils/unlock'
+import { buildSmsText, copyText } from './utils/smsText'
 // import {
 //   saveInvitation,
 //   getInvitation,
@@ -52,6 +53,7 @@ function App() {
   const [unlocked, setUnlocked] = useState(loadUnlocked)
   const [quotaReady, setQuotaReady] = useState(false)
   const [freeUsed, setFreeUsed] = useState(10)
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'ok' | 'err'>('idle')
   const [payOpen, setPayOpen] = useState(false)
   const [hideMark, setHideMark] = useState(false)
   const previewRef = useRef<HTMLDivElement>(null)
@@ -153,6 +155,12 @@ function App() {
     }
   }
 
+  const handleCopySms = async () => {
+    const ok = await copyText(buildSmsText(formData))
+    setCopyStatus(ok ? 'ok' : 'err')
+    window.setTimeout(() => setCopyStatus('idle'), 2000)
+  }
+
   const handleUnlocked = () => {
     saveUnlocked()
     setUnlocked(true)
@@ -173,11 +181,11 @@ function App() {
       </header>
 
       <div className="flex flex-col lg:flex-row lg:min-h-[calc(100vh-72px)] gap-4 lg:gap-6 p-4 sm:p-6 pb-24 lg:pb-6">
-        <aside className="lg:w-[400px] shrink-0 flex flex-col">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-soft border border-gray-100 p-5 sm:p-6 overflow-y-auto flex-1">
-            <section className="mb-6">
-              <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">模板风格</p>
-              <div className="flex flex-wrap gap-2">
+        <aside className="lg:w-[400px] shrink-0 flex flex-col lg:sticky lg:top-[88px] lg:h-[calc(100vh-112px)]">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-soft border border-gray-100 p-4 sm:p-5 overflow-y-auto flex-1">
+            <section className="mb-4">
+              <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">模板风格</p>
+              <div className="flex flex-wrap gap-1.5">
                 {([5, 1, 2, 3, 4, 6, 8, 11] as const).map(id => (
                   <button
                     key={id}
@@ -260,9 +268,22 @@ function App() {
             */}
 
             <section>
-              <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">编辑内容</p>
               <EditorForm data={formData} onChange={setFormData} />
             </section>
+
+            <details className="mt-4 rounded-xl border border-gray-100 bg-gray-50/80 px-3.5 py-2 group">
+              <summary className="cursor-pointer text-xs font-medium text-gray-500 list-none flex items-center justify-between [&::-webkit-details-marker]:hidden">
+                文字版（短信/微信）
+                <span className="text-gray-400 group-open:hidden">展开</span>
+                <span className="text-gray-400 hidden group-open:inline">收起</span>
+              </summary>
+              <pre className="mt-2 whitespace-pre-wrap break-words text-sm leading-relaxed text-gray-700">
+                {buildSmsText(formData)}
+              </pre>
+              <button type="button" className="btn-ghost w-full mt-2" onClick={handleCopySms}>
+                {copyStatus === 'ok' ? '已复制' : copyStatus === 'err' ? '复制失败，请长按选取' : '复制文字'}
+              </button>
+            </details>
           </div>
         </aside>
 
@@ -291,6 +312,13 @@ function App() {
                     : canOriginal || !quotaReady
                       ? '下载图片'
                       : '下载预览图'}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCopySms}
+                  className="btn-ghost shrink-0"
+                >
+                  {copyStatus === 'ok' ? '已复制' : '复制文字'}
                 </button>
                 {quotaReady && !canOriginal && (
                   <button

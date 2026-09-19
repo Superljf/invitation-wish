@@ -1,4 +1,4 @@
-import { FONT_SONG, normalizeNameFont, DEFAULT_COUPLE_FONT_SIZE, DEFAULT_INVITE_NAME_FONT_SIZE, DEFAULT_TIME_LOCATION_FONT_SIZE, PREV_UNIFIED_FONT_SIZE } from '../utils/fonts'
+import { FONT_ZHUQUE, FONT_SONG, normalizeNameFont, DEFAULT_COUPLE_FONT_SIZE, DEFAULT_INVITE_NAME_FONT_SIZE, DEFAULT_TIME_LOCATION_FONT_SIZE, PREV_UNIFIED_FONT_SIZE } from '../utils/fonts'
 
 /** 统一编辑层数据类型 */
 export interface FormData {
@@ -42,7 +42,7 @@ export const defaultFormData: FormData = {
   inviteLine1: '敬备喜筵',
   inviteLine2: '恭请光临',
   inviteClosing: '敬邀',
-  nameFont: FONT_SONG,
+  nameFont: FONT_ZHUQUE,
   coupleFontSize: DEFAULT_COUPLE_FONT_SIZE,
   inviteNameFontSize: DEFAULT_INVITE_NAME_FONT_SIZE,
   timeLocationFontSize: DEFAULT_TIME_LOCATION_FONT_SIZE,
@@ -59,6 +59,16 @@ export function mergeFormData(partial?: Partial<FormData> | null): FormData {
     merged.inviteName2 = merged.bride || defaultFormData.inviteName2
   }
   merged.nameFont = normalizeNameFont(merged.nameFont)
+  try {
+    if (!localStorage.getItem('invitation-font-default-v3')) {
+      if (!partial?.nameFont || partial.nameFont === FONT_SONG) {
+        merged.nameFont = FONT_ZHUQUE
+      }
+      localStorage.setItem('invitation-font-default-v3', '1')
+    }
+  } catch {
+    /* ignore */
+  }
   if (
     merged.coupleFontSize === PREV_UNIFIED_FONT_SIZE &&
     merged.inviteNameFontSize === PREV_UNIFIED_FONT_SIZE &&

@@ -1,4 +1,5 @@
 import { toJpeg } from 'html-to-image'
+import { waitWebFonts } from './webFonts'
 
 /** 导出倍率：在 DOM 上先放大再栅格化，避免手机端先截小图再拉伸发糊 */
 const EXPORT_SCALE = 3
@@ -42,6 +43,7 @@ function captureOptions(node: HTMLElement) {
 
 /** 导出请柬为高清 JPEG（微信会把 PNG 再压成 JPEG，直接出 JPEG 少一次发糊） */
 export async function exportInvitationDataUrl(node: HTMLElement) {
+  await waitWebFonts()
   return toJpeg(node, captureOptions(node))
 }
 

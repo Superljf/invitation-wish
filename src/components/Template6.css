@@ -5,7 +5,7 @@
   overflow: hidden;
   display: flex;
   box-shadow: 0 18px 40px rgba(80, 16, 24, 0.22);
-  font-family: SimSun, 'Songti SC', STSong, 'Noto Serif SC', serif;
+  font-family: inherit;
 }
 
 .template6-red {

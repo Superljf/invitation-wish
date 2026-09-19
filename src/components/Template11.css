@@ -14,7 +14,7 @@
   box-sizing: border-box;
   padding: 36px 28px 28px;
   color: #3a2a22;
-  font-family: STKaiti, KaiTi, 'Kaiti SC', SimSun, serif;
+  font-family: inherit;
   font-size: 15px;
   line-height: 2.05;
   background-color: #f6ecd8;

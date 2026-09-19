@@ -1,3 +1,4 @@
+import { useState, type ReactNode } from 'react'
 import type { FormData } from '../types/formData'
 import { getWeekday } from '../utils/weekday'
 import { NAME_FONT_OPTIONS, FONT_SIZE_OPTIONS } from '../utils/fonts'
@@ -7,216 +8,146 @@ interface Props {
   onChange: (data: FormData) => void
 }
 
+type Tab = 'basic' | 'words' | 'type'
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: 'basic', label: '填写' },
+  { id: 'words', label: '称呼用语' },
+  { id: 'type', label: '字体' },
+]
+
 export function EditorForm({ data, onChange }: Props) {
+  const [tab, setTab] = useState<Tab>('basic')
+
   const update = (k: keyof FormData, v: string) => {
     const next = { ...data, [k]: v }
     if (k === 'solarDate') next.solarWeekday = getWeekday(v)
-    // 敬邀姓名未单独改过时，跟随新郎/新娘
     if (k === 'groom' && data.inviteName1 === data.groom) next.inviteName1 = v
     if (k === 'bride' && data.inviteName2 === data.bride) next.inviteName2 = v
     onChange(next)
   }
 
   return (
-    <div className="flex flex-col gap-4 w-full">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">送呈对象（选填）</label>
-        <input
-          type="text"
-          value={data.recipient}
-          onChange={e => update('recipient', e.target.value)}
-          className="input-modern"
-          placeholder="张三先生"
-        />
+    <div className="w-full">
+      <div className="flex rounded-xl bg-gray-100 p-0.5 mb-3">
+        {TABS.map(item => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => setTab(item.id)}
+            className={`flex-1 py-1.5 text-xs font-medium rounded-lg transition-colors ${
+              tab === item.id ? 'bg-white text-gray-800 shadow-sm' : 'text-gray-500'
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
       </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">举办对象（选填）</label>
-        <input
-          type="text"
-          value={data.honoree}
-          onChange={e => update('honoree', e.target.value)}
-          className="input-modern"
-          placeholder="如：我儿、小女"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">新郎姓名</label>
-        <input
-          type="text"
-          value={data.groom}
-          onChange={e => update('groom', e.target.value)}
-          className="input-modern"
-          placeholder="张三"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">新娘姓名</label>
-        <input
-          type="text"
-          value={data.bride}
-          onChange={e => update('bride', e.target.value)}
-          className="input-modern"
-          placeholder="李四"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">敬邀姓名1</label>
-        <input
-          type="text"
-          value={data.inviteName1}
-          onChange={e => update('inviteName1', e.target.value)}
-          className="input-modern"
-          placeholder="张三"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">敬邀姓名2</label>
-        <input
-          type="text"
-          value={data.inviteName2}
-          onChange={e => update('inviteName2', e.target.value)}
-          className="input-modern"
-          placeholder="李四"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">姓名字体</label>
-        <select
-          value={data.nameFont}
-          onChange={e => update('nameFont', e.target.value)}
-          className="input-modern"
-        >
-          {NAME_FONT_OPTIONS.map(opt => (
-            <option key={opt.label} value={opt.value}>{opt.label}</option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">新郎新娘字号</label>
-        <select
-          value={data.coupleFontSize}
-          onChange={e => update('coupleFontSize', e.target.value)}
-          className="input-modern"
-        >
-          {FONT_SIZE_OPTIONS.map(opt => (
-            <option key={opt.value} value={opt.value}>{opt.label}</option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">敬邀人字号</label>
-        <select
-          value={data.inviteNameFontSize}
-          onChange={e => update('inviteNameFontSize', e.target.value)}
-          className="input-modern"
-        >
-          {FONT_SIZE_OPTIONS.map(opt => (
-            <option key={opt.value} value={opt.value}>{opt.label}</option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">婚礼日期（公历）</label>
-        <input
-          type="date"
-          value={data.solarDate}
-          onChange={e => update('solarDate', e.target.value)}
-          className="input-modern"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">农历日期（手动填写）</label>
-        <input
-          type="text"
-          value={data.lunar}
-          onChange={e => update('lunar', e.target.value)}
-          className="input-modern"
-          placeholder="九月初八"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">举办地点</label>
-        <input
-          type="text"
-          value={data.location}
-          onChange={e => update('location', e.target.value)}
-          className="input-modern"
-          placeholder="某某大酒店三楼宴会厅"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">典礼类型</label>
-        <input
-          type="text"
-          value={data.eventPhrase}
-          onChange={e => update('eventPhrase', e.target.value)}
-          className="input-modern"
-          placeholder="结婚喜宴"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">典礼用语</label>
-        <input
-          type="text"
-          value={data.ceremonyText}
-          onChange={e => update('ceremonyText', e.target.value)}
-          className="input-modern"
-          placeholder="举行婚礼典礼"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">时间</label>
-        <input
-          type="text"
-          value={data.time}
-          onChange={e => update('time', e.target.value)}
-          className="input-modern"
-          placeholder="中午十二时整"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">时间地点字号</label>
-        <select
-          value={data.timeLocationFontSize}
-          onChange={e => update('timeLocationFontSize', e.target.value)}
-          className="input-modern"
-        >
-          {FONT_SIZE_OPTIONS.map(opt => (
-            <option key={opt.value} value={opt.value}>{opt.label}</option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">敬邀语 第一行</label>
-        <input
-          type="text"
-          value={data.inviteLine1}
-          onChange={e => update('inviteLine1', e.target.value)}
-          className="input-modern"
-          placeholder="敬备喜筵"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">敬邀语 第二行</label>
-        <input
-          type="text"
-          value={data.inviteLine2}
-          onChange={e => update('inviteLine2', e.target.value)}
-          className="input-modern"
-          placeholder="恭请光临"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">落款敬语</label>
-        <input
-          type="text"
-          value={data.inviteClosing}
-          onChange={e => update('inviteClosing', e.target.value)}
-          className="input-modern"
-          placeholder="敬邀"
-        />
-      </div>
-  
+
+      {tab === 'basic' && (
+        <div className="grid grid-cols-2 gap-x-2 gap-y-3">
+          <Field label="新郎">
+            <input className="input-compact" value={data.groom} placeholder="张三" onChange={e => update('groom', e.target.value)} />
+          </Field>
+          <Field label="新娘">
+            <input className="input-compact" value={data.bride} placeholder="李四" onChange={e => update('bride', e.target.value)} />
+          </Field>
+          <Field label="公历">
+            <input type="date" className="input-compact" value={data.solarDate} onChange={e => update('solarDate', e.target.value)} />
+          </Field>
+          <Field label="农历">
+            <input className="input-compact" value={data.lunar} placeholder="九月初八" onChange={e => update('lunar', e.target.value)} />
+          </Field>
+          <Field label="时间">
+            <input className="input-compact" value={data.time} placeholder="中午十二时整" onChange={e => update('time', e.target.value)} />
+          </Field>
+          <Field label="典礼类型">
+            <input className="input-compact" value={data.eventPhrase} placeholder="结婚喜宴" onChange={e => update('eventPhrase', e.target.value)} />
+          </Field>
+          <Field label="举办地点" className="col-span-2">
+            <input className="input-compact" value={data.location} placeholder="某某大酒店三楼宴会厅" onChange={e => update('location', e.target.value)} />
+          </Field>
+        </div>
+      )}
+
+      {tab === 'words' && (
+        <div className="grid grid-cols-2 gap-x-2 gap-y-3">
+          <Field label="送呈对象">
+            <input className="input-compact" value={data.recipient} placeholder="张三先生" onChange={e => update('recipient', e.target.value)} />
+          </Field>
+          <Field label="举办对象">
+            <input className="input-compact" value={data.honoree} placeholder="我儿、小女" onChange={e => update('honoree', e.target.value)} />
+          </Field>
+          <Field label="敬邀姓名1">
+            <input className="input-compact" value={data.inviteName1} placeholder="张三" onChange={e => update('inviteName1', e.target.value)} />
+          </Field>
+          <Field label="敬邀姓名2">
+            <input className="input-compact" value={data.inviteName2} placeholder="李四" onChange={e => update('inviteName2', e.target.value)} />
+          </Field>
+          <Field label="典礼用语" className="col-span-2">
+            <input className="input-compact" value={data.ceremonyText} placeholder="举行婚礼典礼" onChange={e => update('ceremonyText', e.target.value)} />
+          </Field>
+          <Field label="敬邀语一">
+            <input className="input-compact" value={data.inviteLine1} placeholder="敬备喜筵" onChange={e => update('inviteLine1', e.target.value)} />
+          </Field>
+          <Field label="敬邀语二">
+            <input className="input-compact" value={data.inviteLine2} placeholder="恭请光临" onChange={e => update('inviteLine2', e.target.value)} />
+          </Field>
+          <Field label="落款敬语" className="col-span-2">
+            <input className="input-compact" value={data.inviteClosing} placeholder="敬邀" onChange={e => update('inviteClosing', e.target.value)} />
+          </Field>
+        </div>
+      )}
+
+      {tab === 'type' && (
+        <div className="grid grid-cols-2 gap-x-2 gap-y-3">
+          <Field label="姓名字体" className="col-span-2">
+            <select className="input-compact" style={{ fontFamily: data.nameFont }} value={data.nameFont} onChange={e => update('nameFont', e.target.value)}>
+              {NAME_FONT_OPTIONS.map(opt => (
+                <option key={opt.label} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+          </Field>
+          <Field label="新人字号">
+            <select className="input-compact" value={data.coupleFontSize} onChange={e => update('coupleFontSize', e.target.value)}>
+              {FONT_SIZE_OPTIONS.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+          </Field>
+          <Field label="敬邀人字号">
+            <select className="input-compact" value={data.inviteNameFontSize} onChange={e => update('inviteNameFontSize', e.target.value)}>
+              {FONT_SIZE_OPTIONS.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+          </Field>
+          <Field label="时间地点字号" className="col-span-2">
+            <select className="input-compact" value={data.timeLocationFontSize} onChange={e => update('timeLocationFontSize', e.target.value)}>
+              {FONT_SIZE_OPTIONS.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+          </Field>
+        </div>
+      )}
     </div>
+  )
+}
+
+function Field({
+  label,
+  children,
+  className = '',
+}: {
+  label: string
+  children: ReactNode
+  className?: string
+}) {
+  return (
+    <label className={`block min-w-0 ${className}`}>
+      <span className="block text-xs text-gray-500 mb-1">{label}</span>
+      {children}
+    </label>
   )
 }

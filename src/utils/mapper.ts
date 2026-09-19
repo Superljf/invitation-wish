@@ -12,6 +12,7 @@ export interface Template1Data {
   location: string
   time: string
   timeLocationFontSize: string
+  nameFont: string
 }
 
 /** 模板二：竖排传统款渲染数据 */
@@ -25,6 +26,7 @@ export interface Template2Data {
   location: string
   time: string
   timeLocationFontSize: string
+  nameFont: string
 }
 
 /** 模板四：竖排款，支持并列（公历|农历、新郎|新娘） */
@@ -65,10 +67,10 @@ export interface Template3Data {
   inviteLine: string
   time: string
   timeLocationFontSize: string
+  nameFont: string
 }
 
 function formatSolarChinese(dateStr: string, weekday: string): string {
-  // 2026-10-08 -> 2026年10月8日
   const [y, m, d] = dateStr.split('-').map(Number)
   return `公历 ${y}年${m}月${d}日 ${weekday}`
 }
@@ -95,6 +97,7 @@ export function mapToTemplate1(f: FormData): Template1Data {
     location: `席设：${f.location}`,
     time: `时间：${f.time}`,
     timeLocationFontSize: f.timeLocationFontSize,
+    nameFont: f.nameFont,
   }
 }
 
@@ -109,6 +112,7 @@ export function mapToTemplate2(f: FormData): Template2Data {
     location: f.location,
     time: f.time,
     timeLocationFontSize: f.timeLocationFontSize,
+    nameFont: f.nameFont,
   }
 }
 
@@ -158,5 +162,6 @@ export function mapToTemplate3(f: FormData): Template3Data {
     inviteLine: `${f.inviteLine1}  ${f.inviteLine2}`,
     time: `时间：${f.time}`,
     timeLocationFontSize: f.timeLocationFontSize,
+    nameFont: f.nameFont,
   }
 }

@@ -9,7 +9,7 @@ interface Props {
 /** 双囍分栏：红底竹影 + 米纸正文。 */
 export function Template6({ data }: Props) {
   return (
-    <div className="template6">
+    <div className="template6" style={{ fontFamily: data.nameFont }}>
       <div className="template6-red" aria-hidden="true">
         <Bamboo className="template6-bamboo" stroke="#2a070c" />
       </div>

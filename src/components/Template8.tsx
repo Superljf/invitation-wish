@@ -11,7 +11,7 @@ export function Template8({ data }: Props) {
   const groom = data.names.groom.replace(' 先生', '')
   const bride = data.names.bride.replace(' 女士', '')
   return (
-    <div className="template8">
+    <div className="template8" style={{ fontFamily: data.nameFont }}>
       <div className="template8-photo" aria-hidden="true">
         <Bouquet className="template8-bouquet" />
       </div>

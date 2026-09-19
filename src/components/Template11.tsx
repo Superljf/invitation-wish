@@ -8,7 +8,7 @@ interface Props {
 /** 朱砂手写：米纸淡格 + 印章。 */
 export function Template11({ data }: Props) {
   return (
-    <div className="template11">
+    <div className="template11" style={{ fontFamily: data.nameFont }}>
       <div className="template11-paper">
         <div className="template11-title">{data.title}</div>
         <p>敬启者：</p>
