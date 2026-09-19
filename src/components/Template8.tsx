@@ -24,8 +24,8 @@ export function Template8({ data }: Props) {
           {groom}<span>　</span>{bride}
         </div>
         <div className="template8-meta">
-          <div>{data.dateBlock.solar.replace('公历 ', '')}</div>
-          <div>{data.dateBlock.lunar}</div>
+          <div className="template8-date">{data.dateBlock.solar.replace('公历 ', '')}</div>
+          <div className="template8-date">{data.dateBlock.lunar}</div>
           <p className="template8-place">{data.location.replace('席设：', '')}</p>
         </div>
       </div>

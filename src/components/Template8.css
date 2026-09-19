@@ -74,12 +74,17 @@
 .template8-meta {
   margin-top: auto;
   font-size: 12px;
-  line-height: 1.9;
-  letter-spacing: 0.08em;
+  line-height: 1.7;
+  letter-spacing: 0;
+}
+
+.template8-date {
+  white-space: nowrap;
 }
 
 .template8-place {
   margin: 8px 0 0;
   font-style: italic;
   color: #7a7368;
+  white-space: normal;
 }

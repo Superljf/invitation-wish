@@ -22,7 +22,7 @@ function dataUrlToFile(dataUrl: string, filename: string) {
   return new File([bytes], filename, { type: mime })
 }
 
-function captureOptions(node: HTMLElement) {
+function captureOptions(node: HTMLElement, backgroundColor: string) {
   const width = node.offsetWidth || 360
   const height = node.offsetHeight || 600
   return {
@@ -30,6 +30,7 @@ function captureOptions(node: HTMLElement) {
     pixelRatio: 1,
     skipFonts: true,
     quality: 0.95,
+    backgroundColor,
     width: width * EXPORT_SCALE,
     height: height * EXPORT_SCALE,
     canvasWidth: width * EXPORT_SCALE,
@@ -41,10 +42,41 @@ function captureOptions(node: HTMLElement) {
   }
 }
 
+function opaqueBackground(el: HTMLElement): string {
+  const walk: HTMLElement[] = [el]
+  while (walk.length) {
+    const cur = walk.shift()!
+    const bg = getComputedStyle(cur).backgroundColor
+    const m = bg.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?\)/)
+    if (m && Number(m[4] ?? 1) > 0.01) return bg
+    walk.push(...Array.from(cur.children) as HTMLElement[])
+  }
+  return '#ffffff'
+}
+
+/** JPEG 没有透明通道，圆角外的像素会变成黑边。导出时先去掉圆角和阴影。 */
+function flattenCard(root: HTMLElement) {
+  const card = (root.firstElementChild as HTMLElement) || root
+  const prevRadius = card.style.borderRadius
+  const prevShadow = card.style.boxShadow
+  card.style.borderRadius = '0'
+  card.style.boxShadow = 'none'
+  return () => {
+    card.style.borderRadius = prevRadius
+    card.style.boxShadow = prevShadow
+  }
+}
+
 /** 导出请柬为高清 JPEG（微信会把 PNG 再压成 JPEG，直接出 JPEG 少一次发糊） */
 export async function exportInvitationDataUrl(node: HTMLElement) {
   await waitWebFonts()
-  return toJpeg(node, captureOptions(node))
+  const restore = flattenCard(node)
+  try {
+    const card = (node.firstElementChild as HTMLElement) || node
+    return await toJpeg(node, captureOptions(node, opaqueBackground(card)))
+  } finally {
+    restore()
+  }
 }
 
 /** 将请柬导出并下载/分享；微信内返回图片地址，由页面长按保存 */
