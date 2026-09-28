@@ -154,9 +154,13 @@ async function persistUsed(n: number) {
 }
 
 export async function hydrateFreeUsed() {
-  const used = await collectUsed()
-  if (used > 0) await persistUsed(used)
-  return used
+  try {
+    const used = await collectUsed()
+    if (used > 0) await persistUsed(used)
+    return used
+  } catch {
+    return 0
+  }
 }
 
 export function remainingFree(used: number) {
@@ -164,16 +168,35 @@ export function remainingFree(used: number) {
 }
 
 export async function consumeFreeDownload() {
-  const used = Math.min((await collectUsed()) + 1, FREE_DOWNLOAD_LIMIT)
-  await persistUsed(used)
-  return used
+  try {
+    const used = Math.min((await collectUsed()) + 1, FREE_DOWNLOAD_LIMIT)
+    await persistUsed(used)
+    return used
+  } catch {
+    return FREE_DOWNLOAD_LIMIT
+  }
 }
 
 async function sha256Hex(text: string) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text))
-  return Array.from(new Uint8Array(buf))
-    .map(b => toHex(b))
-    .join('')
+  try {
+    if (globalThis.crypto?.subtle) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text))
+      return Array.from(new Uint8Array(buf)).map(b => toHex(b)).join('')
+    }
+  } catch {
+    /* HTTP 局域网等非安全上下文没有 subtle */
+  }
+  return fallbackHash(text)
+}
+
+function fallbackHash(text: string) {
+  let h = 2166136261
+  for (let i = 0; i < text.length; i++) {
+    h ^= text.charCodeAt(i)
+    h = Math.imul(h, 16777619)
+  }
+  const hex = (h >>> 0).toString(16).padStart(8, '0')
+  return (hex + hex + hex + hex + hex + hex + hex + hex).slice(0, 64)
 }
 
 function toHex(b: number) {

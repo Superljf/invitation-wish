@@ -91,7 +91,11 @@ export async function downloadNodeAsPng(node: HTMLElement, filename: string) {
   }
 
   if (isMobile() && navigator.canShare && navigator.canShare({ files: [file] })) {
-    await navigator.share({ files: [file], title: jpegName })
+    try {
+      await navigator.share({ files: [file], title: jpegName })
+    } catch (e) {
+      if (!(e instanceof DOMException && e.name === 'AbortError')) throw e
+    }
     return
   }
 

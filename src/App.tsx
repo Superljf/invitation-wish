@@ -83,11 +83,17 @@ function App() {
 
   useEffect(() => {
     let alive = true
-    hydrateFreeUsed().then(n => {
-      if (!alive) return
-      setFreeUsed(n)
-      setQuotaReady(true)
-    })
+    hydrateFreeUsed()
+      .then(n => {
+        if (!alive) return
+        setFreeUsed(n)
+        setQuotaReady(true)
+      })
+      .catch(() => {
+        if (!alive) return
+        setFreeUsed(0)
+        setQuotaReady(true)
+      })
     return () => {
       alive = false
     }
@@ -148,7 +154,11 @@ function App() {
       const wechatUrl = await downloadNodeAsPng(previewRef.current, filename)
       if (wechatUrl) setWechatImage(wechatUrl)
       if (originalThisTime && !unlocked) {
-        setFreeUsed(await consumeFreeDownload())
+        try {
+          setFreeUsed(await consumeFreeDownload())
+        } catch {
+          setFreeUsed(10)
+        }
       }
       setDownloadStatus('idle')
     } catch (e) {
